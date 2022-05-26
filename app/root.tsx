@@ -12,10 +12,14 @@ import {
 
 import NProgress from "nprogress";
 import nProgressStyles from "nprogress/nprogress.css";
+import styles from "./styles/app.css"
 
 export const links: LinksFunction = () => {
   // if you already have one only add this stylesheet to your list of links
-  return [{ rel: "stylesheet", href: nProgressStyles }];
+  return [
+    { rel: "stylesheet", href: nProgressStyles },
+    { rel: "stylesheet", href: styles }
+  ];
 };
 
 export const meta: MetaFunction = () => ({
