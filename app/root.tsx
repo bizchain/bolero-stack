@@ -1,4 +1,5 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
+import * as React from "react"
+import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare";
 import {
   Links,
   LiveReload,
@@ -6,7 +7,16 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useTransition,
 } from "@remix-run/react";
+
+import NProgress from "nprogress";
+import nProgressStyles from "nprogress/nprogress.css";
+
+export const links: LinksFunction = () => {
+  // if you already have one only add this stylesheet to your list of links
+  return [{ rel: "stylesheet", href: nProgressStyles }];
+};
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -15,6 +25,16 @@ export const meta: MetaFunction = () => ({
 });
 
 export default function App() {
+
+  const transition = useTransition();
+  React.useEffect(() => {
+    // when the state is idle then we can to complete the progress bar
+    if (transition.state === "idle") NProgress.done();
+    // and when it's something else it means it's either submitting a form or
+    // waiting for the loaders of the next location so we start it
+    else NProgress.start();
+  }, [transition.state]);
+
   return (
     <html lang="en">
       <head>
