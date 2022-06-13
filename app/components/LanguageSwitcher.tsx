@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { useFetcher, useLocation, useTransition } from "@remix-run/react"
+import { Link, useFetcher, useLocation, useTransition } from "@remix-run/react"
 
 import { motion } from "framer-motion"
 import clsx from "clsx"
@@ -8,6 +8,7 @@ import clsx from "clsx"
 import type { TLang } from "~/types"
 import useTranslate from "~/utils/useTranslate"
 import languageSwitcherLangTable from "~/language/LanguageSwitcher"
+import { DEFAULT_LANGUAGE } from "~/data/static"
 
 type LangListType = {
 	key: TLang,
@@ -32,8 +33,6 @@ type LanguageSwitcherProps = {
  */
 export default function LanguageSwitcher({ flagOnly = true, className }: LanguageSwitcherProps) {
 	const location = useLocation()
-	const transition = useTransition()
-	const fetcher = useFetcher()
 
 	const { lang: currentLang, t } = useTranslate(languageSwitcherLangTable)
 	const currentLangItem = langList.find(lang => lang.key === currentLang) ?? langList[0]
@@ -45,6 +44,7 @@ export default function LanguageSwitcher({ flagOnly = true, className }: Languag
 					<motion.img
 						src={currentLangItem.imgurl}
 						whileHover={{ scale: 1.4, rotate: -15, textShadow: "0px 0px 8px rgb(255,255,255)" }}
+						alt=""
 					/>
 				</div>
 			</label>
@@ -53,7 +53,7 @@ export default function LanguageSwitcher({ flagOnly = true, className }: Languag
 				className={
 					clsx(
 						"p-2 mt-3 border-[1px] border-gray-300 space-y-1 shadow menu menu-compact dropdown-content bg-base-100 rounded-box",
-						flagOnly ? "w-[4.5rem]" : "w-[8rem]"
+						flagOnly ? "w-[4.5rem]" : "w-[10.5rem]"
 					)
 				}
 			>
@@ -62,24 +62,15 @@ export default function LanguageSwitcher({ flagOnly = true, className }: Languag
 						key={lang.key}
 						className={(currentLang === lang.key) ? "bg-gray-200 rounded-lg text-center" : ""}
 					>
-						<fetcher.Form method="post" action="/">
-							<input type="hidden" name="lang" value={lang.key} />
-							<input type="hidden" name="redirectTo" value={location.pathname} />
-							<button type="submit" name="_action" value="changeLanguage">
-								{(currentLang === lang.key && transition.submission)
-									? <div className="p-0 mx-auto my-auto lds-dual-ring"></div>
-									:
-									<span>
-										<motion.img
-											src={lang.imgurl}
-											className={clsx("w-6 h-6", (currentLang !== lang.key) ? "grayscale hover:grayscale-0" : "")}
-											whileHover={{ scale: 1.4, rotate: -15, textShadow: "0px 0px 8px rgb(255,255,255)" }}
-										/>
-										{flagOnly ? null : <span>{t(lang.langName)}</span>}
-									</span>
-								}
-							</button>
-						</fetcher.Form>
+						<Link to={ lang.key === DEFAULT_LANGUAGE ? location.pathname : `${location.pathname}?lang=${lang.key}`}>
+							<motion.img
+								src={lang.imgurl}
+								className={clsx("w-6 h-6", (currentLang !== lang.key) ? "grayscale hover:grayscale-0" : "")}
+								whileHover={{ scale: 1.4, rotate: -15, textShadow: "0px 0px 8px rgb(255,255,255)" }}
+								alt=""
+							/>
+							{flagOnly ? null : <span>{t(lang.langName)}</span>}
+						</Link>
 					</li>
 				))}
 			</ul>

@@ -8,6 +8,7 @@ import useModal from "~/components/Modal"
 import useTranslate from "~/utils/useTranslate"
 
 import type { MetaFunction } from "@remix-run/cloudflare"
+import Navigator from "~/components/Navigator"
 
 // export const links: LinksFunction = () => {
 // 	return [
@@ -35,9 +36,12 @@ export default function LoginRoute() {
 	const { t } = useTranslate(loginLangTable)
 	return (
 		<>
+			<Navigator />
 			<div className="flex justify-end p-10">
 				<LanguageSwitcher flagOnly={false} />
 			</div>
+
+
 			<section className="py-24 bg-white md:py-32" style={{ backgroundImage: "url('/img/elements/pattern-white.svg')", backgroundPosition: "center" }}>
 				<div className="container px-4 mx-auto">
 					<div className="max-w-sm mx-auto">

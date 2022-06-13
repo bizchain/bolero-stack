@@ -18,10 +18,10 @@ import styles from "./styles/app.css"
 import { getSeo } from "./seo"
 import { cookieUserPrefs } from "./cookies"
 import { authenticator } from "./services/auth.server"
-import { ADMIN_EMAIL, DEFAULT_LANGUAGE, SITE_KEYWORDS } from "./data/static"
+import { ADMIN_EMAIL, DEFAULT_LANGUAGE, SITE_KEYWORDS, SUPPORTED_LANGUAGE } from "./data/static"
 
 import type { LinksFunction, LoaderFunction, MetaFunction, ActionFunction, HeadersFunction } from "@remix-run/cloudflare"
-import type { TUser } from "./types"
+import type { TLang, TUser } from "./types"
 import invariant from "tiny-invariant"
 
 const [seoMeta, seoLinks] = getSeo()
@@ -57,9 +57,10 @@ export const headers: HeadersFunction = ({ loaderHeaders }) => {
 }
 
 export type TRootDataLoader = {
-	lang: string
-	user: TUser | null
+	lang: TLang
+	acceptCookies: boolean
 	isAdmin: boolean
+	user: TUser | null
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -70,13 +71,12 @@ export const action: ActionFunction = async ({ request }) => {
 	const _action = formData.get("_action")
 	invariant(typeof _action === "string", "Root >>> Method Not Allow")
 	const redirectTo = String(formData.get("redirectTo"))
-	const lang = formData.get("lang") ?? DEFAULT_LANGUAGE
 
 	if (_action === "redirect") return redirect(redirectTo)
 
 	switch (_action) {
-		case "changeLanguage":
-			userPrefs.lang = lang
+		case "closeCookieMessage":
+			userPrefs.acceptCookies = true
 			return redirect(redirectTo, {
 				headers: {
 					"Set-Cookie": await cookieUserPrefs.serialize(userPrefs),
@@ -90,14 +90,22 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const cookieHeader = request.headers.get("Cookie")
-	const cookies = (await cookieUserPrefs.parse(cookieHeader)) || {}
+	const userPrefs = (await cookieUserPrefs.parse(cookieHeader)) || {}
 	const user = await authenticator.isAuthenticated(request)
+
+	/**
+	 * Control the language via search params `?lang=`
+	 */
+	const url = new URL(request.url)
+	const _lang = url.searchParams.get("lang") as TLang
+	const lang = SUPPORTED_LANGUAGE.includes(_lang) ? _lang : DEFAULT_LANGUAGE
 
 	return json<TRootDataLoader>(
 		{
-			lang: cookies?.lang ?? DEFAULT_LANGUAGE,
+			lang,
+			acceptCookies: userPrefs.acceptCookies ?? false,
 			isAdmin: user?.email === ADMIN_EMAIL,
-			user
+			user,
 		},
 		{
 			headers: {
@@ -110,6 +118,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function App() {
 	const transition = useTransition()
 	const loaderData = useLoaderData()
+
 	React.useEffect(() => {
 		// when the state is idle then we can to complete the progress bar
 		if (transition.state === "idle") NProgress.done()
