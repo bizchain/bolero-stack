@@ -14,6 +14,7 @@ export default function handleRequest(
 	)
 
 	responseHeaders.set("Content-Type", "text/html")
+	responseHeaders.set("X-Powered-By", "BizChain Labs")
 
 	return new Response("<!DOCTYPE html>" + markup, {
 		status: responseStatusCode,

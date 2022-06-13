@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare"
+import { json, redirect } from "@remix-run/cloudflare"
 import {
 	Links,
 	LiveReload,
@@ -7,30 +7,109 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useLoaderData,
 	useTransition,
 } from "@remix-run/react"
 
 import NProgress from "nprogress"
 import nProgressStyles from "nprogress/nprogress.css"
+
 import styles from "./styles/app.css"
+import { getSeo } from "./seo"
+import { cookieUserPrefs } from "./cookies"
+import { authenticator } from "./services/auth.server"
+import { ADMIN_EMAIL, DEFAULT_LANGUAGE, SITE_KEYWORDS } from "./data/static"
+
+import type { LinksFunction, LoaderFunction, MetaFunction, ActionFunction, HeadersFunction } from "@remix-run/cloudflare"
+import type { TUser } from "./types"
+import invariant from "tiny-invariant"
+
+const [seoMeta, seoLinks] = getSeo()
 
 export const links: LinksFunction = () => {
-	// if you already have one only add this stylesheet to your list of links
-	return [
-		{ rel: "stylesheet", href: nProgressStyles },
-		{ rel: "stylesheet", href: styles }
-	]
+	return (
+		[
+			{ rel: "preconnect", href: "https://fonts.gstatic.com" },
+			{ rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" },
+			{ rel: "stylesheet", href: styles },
+			{ rel: "stylesheet", href: nProgressStyles },
+			...seoLinks
+		]
+	)
 }
 
-export const meta: MetaFunction = () => ({
-	charset: "utf-8",
-	title: "New Remix App",
-	viewport: "width=device-width,initial-scale=1",
-})
+export const meta: MetaFunction = () => {
+	return (
+		{
+			title: "Great Bolero Website",
+			viewport: "width=device-width,initial-scale=1",
+			charset: "utf-8",
+			keywords: SITE_KEYWORDS,
+			...seoMeta,
+		}
+	)
+}
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+	return {
+		"Cache-Control": loaderHeaders.get("Cache-Control") ?? ""
+	}
+}
+
+export type TRootDataLoader = {
+	lang: string
+	user: TUser | null
+	isAdmin: boolean
+}
+
+export const action: ActionFunction = async ({ request }) => {
+	const cookieHeader = request.headers.get("Cookie")
+	const userPrefs = (await cookieUserPrefs.parse(cookieHeader)) || {}
+
+	const formData = await request.formData()
+	const _action = formData.get("_action")
+	invariant(typeof _action === "string", "Root >>> Method Not Allow")
+	const redirectTo = String(formData.get("redirectTo"))
+	const lang = formData.get("lang") ?? DEFAULT_LANGUAGE
+
+	if (_action === "redirect") return redirect(redirectTo)
+
+	switch (_action) {
+		case "changeLanguage":
+			userPrefs.lang = lang
+			return redirect(redirectTo, {
+				headers: {
+					"Set-Cookie": await cookieUserPrefs.serialize(userPrefs),
+				},
+			})
+
+		default:
+			return json({ message: "Bad Request" }, { status: 400 })
+	}
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+	const cookieHeader = request.headers.get("Cookie")
+	const cookies = (await cookieUserPrefs.parse(cookieHeader)) || {}
+	const user = await authenticator.isAuthenticated(request)
+
+	return json<TRootDataLoader>(
+		{
+			lang: cookies?.lang ?? DEFAULT_LANGUAGE,
+			isAdmin: user?.email === ADMIN_EMAIL,
+			user
+		},
+		{
+			headers: {
+				"Cache-Control": "max-age=300, stale-while-revalidate=60"
+			}
+		}
+	)
+}
 
 export default function App() {
-
 	const transition = useTransition()
+	const loaderData = useLoaderData()
 	React.useEffect(() => {
 		// when the state is idle then we can to complete the progress bar
 		if (transition.state === "idle") NProgress.done()
@@ -40,7 +119,7 @@ export default function App() {
 	}, [transition.state])
 
 	return (
-		<html lang="en">
+		<html lang={loaderData.lang}>
 			<head>
 				<Meta />
 				<Links />
