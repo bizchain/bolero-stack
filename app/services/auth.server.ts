@@ -33,7 +33,8 @@ authenticator.use(
 
 		if (Boolean(honeypot) === true) throw new AuthorizationError("Something wrong just happened! Error code: \"SPAM DETECTED\"")
 
-		const hashedPassword = await passwordHash(password)
+		// const hashedPassword = await passwordHash(password)
+		const hashedPassword = password
 
 		// And finally, check and get the user's data if exited
 		const user = await isValidLogin(email.toLowerCase(), hashedPassword)

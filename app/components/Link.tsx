@@ -8,8 +8,8 @@ const Link = React.forwardRef(
 		const { to, ...otherProps } = props
 		return (
 			<RemixLink
-				to={to + location.search}
 				{...otherProps}
+				to={to + location.search}
 				ref={ref}
 			/>
 		)

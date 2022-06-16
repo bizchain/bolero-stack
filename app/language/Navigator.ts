@@ -7,7 +7,7 @@ import type { TLang } from "~/types"
 const langKey = [
 	"home",
 	"login",
-	"sample-page",
+	"about-us",
 ] as const
 
 /**
@@ -25,12 +25,12 @@ const navigatorLangTable: TLangTable = {
 	en: {
 		"home":"Home",
 		"login":"Login",
-		"sample-page":"Sample Page",
+		"about-us":"About us",
 	},
 	vi: {
 		"home":"Trang chủ",
 		"login":"Đăng nhập",
-		"sample-page":"Trang mẫu",
+		"about-us":"Giới thiệu",
 	}
 }
 

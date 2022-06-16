@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Link, useFetcher, useLocation, useTransition } from "@remix-run/react"
+import { Link, useLocation } from "@remix-run/react"
 
 import { motion } from "framer-motion"
 import clsx from "clsx"
@@ -17,6 +17,7 @@ type LangListType = {
 }
 
 export const langList: LangListType[] = [
+	//this is default language
 	{ key: "en", langName: "english", imgurl: "/img/flags/flag-usa.png" },
 	{ key: "vi", langName: "vietnamese", imgurl: "/img/flags/flag-vietnam.png" },
 ]

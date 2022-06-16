@@ -12,7 +12,9 @@
     "start": "cross-env NODE_ENV=production npm run dev:wrangler"
   },
   "dependencies": {
-    "@bizchain.vn/notion": "^0.0.4",
+    "@bizchain.vn/notion": "^0.0.5",
+    "@bizchain.vn/svg": "^0.0.1",
+    "@bizchain.vn/ui": "^0.0.3",
     "@bizchain.vn/utils": "^0.0.5",
     "@remix-run/cloudflare": "^1.5.1",
     "@remix-run/cloudflare-pages": "^1.5.1",
@@ -21,16 +23,19 @@
     "clsx": "^1.1.1",
     "cross-env": "^7.0.3",
     "daisyui": "^2.15.3",
+    "dayjs": "^1.11.3",
     "framer-motion": "^6.3.11",
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hot-toast": "^2.2.0",
     "react-transition-group": "^4.4.2",
     "remix-auth": "^3.2.2",
     "remix-auth-form": "^1.1.2",
     "remix-seo": "^0.1.0",
-    "tiny-invariant": "^1.2.0"
+    "tiny-invariant": "^1.2.0",
+    "usehooks-ts": "^2.5.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^3.10.0",

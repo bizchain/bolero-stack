@@ -27,7 +27,7 @@ import type {
  * @returns
  */
 export function isOnboarded(user: TUser): boolean {
-	return (user.status === "activated" || user.status === "emailChanged" || user.status === "blocked")
+	return (user.status === "activated" || user.status === "emailChanged" || user.status === "disabled")
 }
 
 /**
@@ -165,6 +165,9 @@ export async function getAllUsers(): Promise<TUser[]> {
  * @returns TUser | boolean
  */
 export async function isValidLogin(email: string, password: string): Promise<TUser | null> {
+
+	console.log({email, password})
+
 	const queryStr = JSON.stringify({
 		filter: {
 			and: [
@@ -179,6 +182,7 @@ export async function isValidLogin(email: string, password: string): Promise<TUs
 			],
 		},
 	})
+
 	const queryRes = await queryDatabase(
 		apiHeaders(NOTION_API_KEY),
 		DB_USERS,

@@ -7,9 +7,9 @@
  */
 
 // export const NOTION_VERSION = "2022-02-22"
-export const NOTION_API_KEY = ""
-export const DB_USERS = ""
-export const ERROR_PAGE_ID = ""
+export const NOTION_API_KEY = "secret_haXet07eyjy7p9Wdekp8WgdYQtqjLnkVJVSTlUHZPVj"
+export const DB_USERS = "c6c5a6ce361543fea09dfe2af90a82ed"
+export const ERROR_PAGE_ID = "2def2a26d02b4affa8a37da63e3c14f5"
  
 /**
  * SENDING EMAILS

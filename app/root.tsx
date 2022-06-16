@@ -7,10 +7,13 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useCatch,
 	useLoaderData,
+	useLocation,
 	useTransition,
 } from "@remix-run/react"
 
+import { Toaster } from "react-hot-toast"
 import NProgress from "nprogress"
 import nProgressStyles from "nprogress/nprogress.css"
 
@@ -18,11 +21,17 @@ import styles from "./styles/app.css"
 import { getSeo } from "./seo"
 import { cookieUserPrefs } from "./cookies"
 import { authenticator } from "./services/auth.server"
-import { ADMIN_EMAIL, DEFAULT_LANGUAGE, SITE_KEYWORDS, SUPPORTED_LANGUAGE } from "./data/static"
+import { ADMIN_EMAIL, DEFAULT_LANGUAGE, SITE_KEYWORDS, SUPPORTED_LANGUAGES } from "./data/static"
 
 import type { LinksFunction, LoaderFunction, MetaFunction, ActionFunction, HeadersFunction } from "@remix-run/cloudflare"
 import type { TLang, TUser } from "./types"
 import invariant from "tiny-invariant"
+import useErrorReport from "./utils/useErrorReport"
+import Link from "./components/Link"
+import useTranslate from "./utils/useTranslate"
+import errorBoundaryLangTable from "./language/ErrorBoundary"
+import ErrorBoundaryComponent from "./components/ErrorBoundaryComponent"
+import CatchBoundaryComponent from "./components/CatchBoundaryComponent"
 
 const [seoMeta, seoLinks] = getSeo()
 
@@ -57,10 +66,22 @@ export const headers: HeadersFunction = ({ loaderHeaders }) => {
 }
 
 export type TRootDataLoader = {
+	/**
+	 * Keep track the language of the site
+	 */
 	lang: TLang
+	/**
+	 * Whether user accept cookies or not, this is for EU market regulation
+	 */
 	acceptCookies: boolean
-	isAdmin: boolean
+	/**
+	 * Whether use is loggin or not
+	 */
 	user: TUser | null
+	/**
+	 * Does current user is the site's owner
+	 */
+	isAdmin: boolean
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -98,12 +119,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 	 */
 	const url = new URL(request.url)
 	const _lang = url.searchParams.get("lang") as TLang
-	const lang = SUPPORTED_LANGUAGE.includes(_lang) ? _lang : DEFAULT_LANGUAGE
+	const lang = SUPPORTED_LANGUAGES.includes(_lang) ? _lang : DEFAULT_LANGUAGE
 
 	return json<TRootDataLoader>(
 		{
 			lang,
-			acceptCookies: userPrefs.acceptCookies ?? false,
+			acceptCookies: Boolean(userPrefs.acceptCookies),
 			isAdmin: user?.email === ADMIN_EMAIL,
 			user,
 		},
@@ -135,10 +156,24 @@ export default function App() {
 			</head>
 			<body>
 				<Outlet />
+				<Toaster position="bottom-right" />
 				<ScrollRestoration />
 				<Scripts />
 				<LiveReload />
 			</body>
 		</html>
 	)
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+	useErrorReport(error.message, location.pathname + location.search)
+	return <ErrorBoundaryComponent message={error.message}/>
+}
+
+export function CatchBoundary() {
+	const caught = useCatch()
+	const location = useLocation()
+	const content = `[${caught.status}] ${caught.statusText}`
+	useErrorReport(content, location.pathname + location.search)
+	return  <CatchBoundaryComponent message={content} />
 }

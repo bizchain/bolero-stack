@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+   .scrollbar-transparent::-webkit-scrollbar {
+      width: 0px;
+   }
+}
+
+/* hide anything */
+.desse {
+   display: none !important;
+}
+
+/* button css for dashboard */
+
+.btn-dashLink {
+   @apply h-10 bg-dashLink rounded-md hover:bg-dashLinkHover text-white box-border flex items-center justify-center text-[0.875rem] py-2 px-4 transition-all cursor-pointer
+}
+
+.btn-dashLink-danger {
+   @apply h-10 bg-red-500 rounded-md hover:bg-red-700 text-white box-border flex items-center justify-center text-[0.875rem] py-2 px-4 transition-all cursor-pointer
+}
+
+.btn-dashLink-disabled {
+   @apply h-10 bg-dashLink/70 rounded-md text-white/90 box-border flex items-center justify-center text-[0.875rem] py-2 px-4
+}
+
+.btn-dashLink-outline {
+   @apply h-10 bg-white text-dashLink border-[1px] border-dashLink hover:border-dashLinkHover hover:text-white hover:bg-dashLinkHover rounded-md box-border flex items-center justify-center text-[0.875rem] py-2 px-4  transition-all
+}
+
+.iconBtn-dashLink-outline {
+   @apply h-10 bg-white text-dashLink border-[1px] border-dashLink hover:border-dashLinkHover hover:text-white hover:bg-dashLinkHover rounded-md box-border flex items-center justify-center text-[0.875rem] p-2 transition-all
+}

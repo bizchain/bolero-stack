@@ -3,6 +3,18 @@ module.exports = {
 		"./app/**/*.{js,ts,jsx,tsx}"
 	],
 	theme: {
+		extend: {
+			colors: {
+				"primaryBgColor": "#008184",
+				"primaryTextColor": "#ffffff",
+				"primaryColorLine": "#7fcbcd",
+				"dashBorder": "#d9d9d9",
+				"dashBorderDark": "#b6b6b6",
+				"dashLink": "#0051c3",
+				"dashLinkHover": "#003681",
+				"dashGrayBackground": "#f2f2f2"
+			}
+		},
 		screens: {
 			sm: "640px",
 			md: "768px",
@@ -348,24 +360,24 @@ module.exports = {
 			full: "100%",
 			screen: "100vh",
 		},
-		maxWidth: {
-			none: "none",
-			xs: "20rem",
-			sm: "24rem",
-			md: "28rem",
-			lg: "32rem",
-			xl: "36rem",
-			"2xl": "42rem",
-			"3xl": "48rem",
-			"4xl": "56rem",
-			"5xl": "64rem",
-			"6xl": "72rem",
-			"7xl": "80rem",
-			full: "100%",
-			min: "min-content",
-			max: "max-content",
-			prose: "65ch",
-		},
+		// maxWidth: {
+		// 	none: "none",
+		// 	xs: "20rem",
+		// 	sm: "24rem",
+		// 	md: "28rem",
+		// 	lg: "32rem",
+		// 	xl: "36rem",
+		// 	"2xl": "42rem",
+		// 	"3xl": "48rem",
+		// 	"4xl": "56rem",
+		// 	"5xl": "64rem",
+		// 	"6xl": "72rem",
+		// 	"7xl": "80rem",
+		// 	full: "100%",
+		// 	min: "min-content",
+		// 	max: "max-content",
+		// 	prose: "65ch",
+		// },
 		minHeight: {
 			"0": "0",
 			full: "100%",

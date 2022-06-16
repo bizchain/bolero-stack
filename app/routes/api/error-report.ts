@@ -1,6 +1,6 @@
 import { ActionFunction, json } from "@remix-run/cloudflare"
 
-import { addBlocks, apiHeaders } from "@bizchain.vn/notion"
+import { addBlocks, apiHeaders, newPlainTextBlocks, parsePageId } from "@bizchain.vn/notion"
 
 import { ERROR_PAGE_ID, NOTION_API_KEY } from "~/data/static.server"
 
@@ -25,17 +25,17 @@ export const action: ActionFunction = async ({ request }) => {
 
 	const message = String(formData.get("error"))
 	const date = String(formData.get("date"))
-	const errorStr = `${date} >> ${message}`
+	const name = String(formData.get("name"))
+	const email = String(formData.get("email"))
+	const url = String(formData.get("url"))
+	
+	const errorStr = `${date} > ${name} (${email}) > ${message} @ ${url}`
 
-	//All errors will be posted to a specified page
-
-	try {
-		await addBlocks(apiHeaders(NOTION_API_KEY), ERROR_PAGE_ID, errorStr)
-	} catch (error) {
-		return json({
-			message: "Failed to record the error to database. ERROR_PAGE_ID not found - Docs: https://docs.bizchain.vn/docs/developer/install/error-report"
-		}, { status: 400 })
-	}
+	await addBlocks(
+		apiHeaders(NOTION_API_KEY),
+		ERROR_PAGE_ID,
+		newPlainTextBlocks([errorStr])
+	)
 
 	return json({ message: "Error information received successfully" }, { status: 200 })
 }

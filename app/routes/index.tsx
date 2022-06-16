@@ -9,6 +9,7 @@ import useTranslate from "~/utils/useTranslate"
 
 import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare"
 import Navigator from "~/components/Navigator"
+import ErrorBoundaryComponent from "~/components/ErrorBoundaryComponent"
 
 export const headers = () => {
 	return {
@@ -33,25 +34,31 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Index() {
-	const { t } = useTranslate(languageSwitcherLangTable)
+	// const { t } = useTranslate(indexRouteLangTable)
 	return (
-		<div>
+		<>
 			<Navigator />
-			<div className="flex justify-end p-10">
-				<LanguageSwitcher flagOnly={false} />
-			</div>
 			<div className="p-10">
 				<h1 className="text-3xl font-bold underline">
-					{t("english")}
+					Hello world
 				</h1>
 				<div className="prose">
-					<p>hello world</p>
-					<button>
-						<Link to="/login" className="btn btn-primary">Login</Link>
-					</button>
-					<blockquote>yes please</blockquote>
+					hello world
 				</div>
 			</div>
+		</>
+	)
+}
+
+
+export function ErrorBoundary({ error }: { error: Error }) {
+	return <ErrorBoundaryComponent message={error.message}/>
+}
+
+export function CatchBoundary() {
+	return (
+		<div>
+			This is Index Catch Boundary
 		</div>
 	)
 }

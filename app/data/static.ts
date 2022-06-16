@@ -16,5 +16,5 @@ export const SITE_BASE_URL = process.env.NODE_ENV === "production"
 
 export const ADMIN_EMAIL = "admin@example.com"
 
-export const SUPPORTED_LANGUAGE: TLang[] = ["en", "vi"]
+export const SUPPORTED_LANGUAGES: TLang[] = ["en", "vi"]
 export const DEFAULT_LANGUAGE: TLang = "vi"
