@@ -11,7 +11,6 @@ import toast from "react-hot-toast"
 
 import { getSeoMeta } from "~/seo"
 import { SITE_LONG_DESC, SITE_NAME } from "~/data/static"
-import LanguageSwitcher from "~/components/LanguageSwitcher"
 import loginLangTable from "~/language/login"
 import useModal from "~/components/Modal"
 import useTranslate from "~/utils/useTranslate"
@@ -22,8 +21,6 @@ import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/re
 // import useUserPrefs from "~/utils/useUserPrefs"
 
 import type { ActionFunction, LoaderFunction, MetaFunction } from "@remix-run/cloudflare"
-import Link from "~/components/Link"
-import { LogoBizchain } from "@bizchain.vn/svg"
 import MiniHeader from "~/components/MiniHeader"
 import MiniFooter from "~/components/MiniFooter"
 
@@ -140,13 +137,12 @@ export default function LoginRoute() {
 			<MiniHeader/>
 
 			<section
-				className="py-24 bg-white md:py-32"
-				style={{ backgroundImage: "url('/img/elements/pattern-white.svg')", backgroundPosition: "center" }}
+				className="py-24 bg-white md:py-32 bg-[url('/img/elements/pattern-white.svg')] bg-center"
 			>
 				<div className="container px-4 mx-auto">
 					<div className="max-w-sm mx-auto">
 						<div className="mb-6 text-center">
-							<a className="inline-block mb-6" href="#">
+							<a className="inline-block mb-6" href="#" title="Logo">
 								<img className="h-16" src="/img/logos/logo.png" alt="" />
 							</a>
 							<h3 className="mb-4 text-2xl font-bold md:text-3xl">{t("sign-in-to-your-account")}</h3>

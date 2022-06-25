@@ -38,8 +38,9 @@ const [seoMeta, seoLinks] = getSeo()
 export const links: LinksFunction = () => {
 	return (
 		[
+			{ rel: "preconnect", href: "https://fonts.googleapis.com" },
 			{ rel: "preconnect", href: "https://fonts.gstatic.com" },
-			{ rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" },
+			{ rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" },
 			{ rel: "stylesheet", href: styles },
 			{ rel: "stylesheet", href: nProgressStyles },
 			...seoLinks

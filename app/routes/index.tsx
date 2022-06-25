@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { getSeoLinks, getSeoMeta } from "~/seo"
-import { SITE_BASE_URL, SITE_LONG_DESC, SITE_NAME } from "~/data/static"
+import { SITE_BASE_URL, SITE_LONG_DESC, SITE_NAME, SITE_SHORT_DESC } from "~/data/static"
 import Link from "~/components/Link"
 import LanguageSwitcher from "~/components/LanguageSwitcher"
 import languageSwitcherLangTable from "~/language/LanguageSwitcher"
@@ -27,7 +27,7 @@ export const links: LinksFunction = () => {
 export const meta: MetaFunction = () => {
 	const seoMeta = getSeoMeta({
 		bypassTemplate: true,
-		title: `${SITE_NAME} - Your Great Website`,
+		title: `${SITE_NAME} - ${SITE_SHORT_DESC}`,
 		description: SITE_LONG_DESC
 	})
 	return ({ ...seoMeta })

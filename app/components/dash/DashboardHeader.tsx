@@ -75,7 +75,7 @@ export default function DashboardHeader({ showSidebar, setShowSidebar }: {
 							<IconUser className="w-5 h-5 mr-1" />
 							<IconDown className="h-5" />
 						</label>
-						<ul tabIndex={0} className="w-72 shadow-xl menu menu-compact dropdown-content bg-base-100 border-[1px] border-dashBorderDark">
+						<ul tabIndex={0} className="w-72 shadow-xl menu menu-compact dropdown-content bg-white border-[1px] border-dashBorderDark">
 							{isAdmin
 								? isAccessingAdmin
 									? <li className="xs:hidden">

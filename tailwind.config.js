@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const colors = require("tailwindcss/colors")
+
 module.exports = {
 	content: [
 		"./app/**/*.{js,ts,jsx,tsx}"
@@ -23,6 +26,7 @@ module.exports = {
 			"2xl": "1536px",
 		},
 		colors: {
+			...colors,
 			current: "currentColor",
 			transparent: "transparent",
 

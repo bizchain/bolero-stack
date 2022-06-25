@@ -53,7 +53,7 @@ export default function LanguageSwitcher({ flagOnly = true, className }: Languag
 				tabIndex={0}
 				className={
 					clsx(
-						"p-2 mt-3 border-[1px] border-gray-300 space-y-1 shadow menu menu-compact dropdown-content bg-base-100 rounded-box",
+						"p-2 mt-3 border-[1px] border-gray-300 space-y-1 shadow menu menu-compact dropdown-content bg-white rounded-box",
 						flagOnly ? "w-[4.5rem]" : "w-[10.5rem]"
 					)
 				}
