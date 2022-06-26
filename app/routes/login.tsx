@@ -11,7 +11,7 @@ import toast from "react-hot-toast"
 
 import { getSeoMeta } from "~/seo"
 import { SITE_LONG_DESC, SITE_NAME } from "~/data/static"
-import loginLangTable from "~/language/login"
+import loginLangTable from "~/languages/login"
 import useModal from "~/components/Modal"
 import useTranslate from "~/utils/useTranslate"
 
@@ -95,7 +95,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function LoginRoute() {
 	const { isOpen, closeModal, openModal, Modal } = useModal()
-	const { t } = useTranslate(loginLangTable)
+	const { t } = useTranslate([loginLangTable])
 
 	const [email, setEmail] = React.useState("")
 	const [password, setPassword] = React.useState("")

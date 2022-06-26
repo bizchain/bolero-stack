@@ -20,7 +20,7 @@ import type { ActionFunction, LoaderFunction, MetaFunction, LinksFunction } from
 import type { TFooterMenuItem, TSidebarMenuItem, TUser } from "~/types"
 import useErrorReport from "~/utils/useErrorReport"
 import useTranslate from "~/utils/useTranslate"
-import errorBoundaryLangTable from "~/language/ErrorBoundary"
+import errorBoundaryLangTable from "~/languages/ErrorBoundary"
 import ErrorBoundaryComponent from "~/components/ErrorBoundaryComponent"
 
 export const meta: MetaFunction = () => {

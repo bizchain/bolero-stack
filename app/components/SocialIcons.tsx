@@ -1,6 +1,6 @@
 /*************************************************************************
  * ╔═══════════════════════════════════════════════════════════════════╗ *
- * ║   errorBoundaryLangTable  | 1.0.0                                 ║ *
+ * ║   SocialIcons  | 1.0.0                                            ║ *
  * ╠═══════════════════════════════════════════════════════════════════╣ *
  * ║                                                                   ║ *
  * ║   @author     A. Cao <cao@anh.pw>                                 ║ *
@@ -20,26 +20,62 @@
 
 import * as React from "react"
 
-import errorBoundaryLangTable from "~/languages/ErrorBoundary"
-import Link from "./Link"
-import useTranslate from "~/utils/useTranslate"
+import { motion } from "framer-motion"
+import clsx from "clsx"
 
-export default function ErrorBoundaryComponent({ message }: { message: string }) {
-	const { t } = useTranslate([errorBoundaryLangTable])
+const SocialIconsContext = React.createContext({ className: "" })
+
+type SocialIconProps = {
+	url: string
+	className?: string
+	children: React.ReactNode
+}
+
+function SocialItem({ url, children }: SocialIconProps) {
+	const { className } = React.useContext(SocialIconsContext)
 	return (
-		<div className="w-screen h-screen">
-			<div className="flex items-center justify-center h-screen">
-				<section className="max-w-screen-lg px-4 py-10 prose rounded-md md:px-6 lg:px-8 xl:px-10 bg-red-50">
-					<h2>{t("error-message-from-system")}</h2>
-					<pre>{message}</pre>
-					<p>{t("refresh-the-page-or")} <Link to="." className="alink-dashboard decoration-slate-50">{t("click-here")}</Link> {t("to-start-over")}.</p>
-					<blockquote>
-						{t("error-report-notice-1")}
-						<br />
-						{t("error-report-notice-2")}
-					</blockquote>
-				</section>
-			</div>
-		</div>
+		<motion.a
+			href={url}
+			target="_blank"
+			className={`p-[2px] rounded-full flex items-center justify-center ${className}`}
+			whileHover={{ scale: 1.2 }}
+		>
+			{children}
+		</motion.a>
 	)
 }
+
+/**
+ * `className` here will be applied to all `SocialIcons.Item`
+ */
+function SocialIcons({ className, colAlign, spacing, children }: { 
+	className?: string
+	colAlign?: boolean
+	spacing: 2 | 4 | 6
+	children: React.ReactNode
+}) {
+	return (
+		<SocialIconsContext.Provider value={{ className: className ?? "" }}>
+			<div
+				className={clsx(
+					"flex items-center",
+					{
+						"flex-col": colAlign,
+						"space-x-2": spacing === 2 && !colAlign,
+						"space-x-4": spacing === 4 && !colAlign,
+						"space-x-6": spacing === 6 && !colAlign,
+						"space-y-2": spacing === 2 && colAlign,
+						"space-y-4": spacing === 4 && colAlign,
+						"space-y-6": spacing === 6 && colAlign,
+					}
+				)}
+			>
+				{children}
+			</div>
+		</SocialIconsContext.Provider>
+	)
+}
+
+SocialIcons.Item = SocialItem
+
+export default SocialIcons

@@ -1,6 +1,6 @@
 /*************************************************************************
  * ╔═══════════════════════════════════════════════════════════════════╗ *
- * ║   errorBoundaryLangTable  | 1.0.0                                 ║ *
+ * ║   MenuButton  | 1.0.0                                             ║ *
  * ╠═══════════════════════════════════════════════════════════════════╣ *
  * ║                                                                   ║ *
  * ║   @author     A. Cao <cao@anh.pw>                                 ║ *
@@ -19,27 +19,88 @@
  ************************************************************************/
 
 import * as React from "react"
+import { motion, Transition, SVGMotionProps } from "framer-motion"
 
-import errorBoundaryLangTable from "~/languages/ErrorBoundary"
-import Link from "./Link"
-import useTranslate from "~/utils/useTranslate"
+interface Props extends SVGMotionProps<unknown> {
+	isOpen?: boolean
+	color?: string
+	strokeWidth?: string | number
+	transition?: Transition
+	lineProps?: any
+	width: number
+	height: number
+}
 
-export default function ErrorBoundaryComponent({ message }: { message: string }) {
-	const { t } = useTranslate([errorBoundaryLangTable])
+const MenuButton = ({
+	color = "#000",
+	height = 24,
+	isOpen = false,
+	lineProps,
+	strokeWidth = 1,
+	transition,
+	width = 24,
+	...props
+}: Props) => {
+	const variant = isOpen ? "opened" : "closed"
+	const top = {
+		closed: { rotate: 0, translateY: 0 },
+		opened: { rotate: 45, translateY: 2 }
+	}
+	const center = {
+		closed: { opacity: 1 },
+		opened: { opacity: 0 }
+	}
+	const bottom = {
+		closed: { rotate: 0, translateY: 0 },
+		opened: { rotate: -45, translateY: -2 }
+	}
+	lineProps = {
+		animate: variant,
+		initial: "closed",
+		stroke: color,
+		strokeWidth: strokeWidth as number,
+		transition,
+		vectorEffect: "non-scaling-stroke",
+		...lineProps
+	}
+	const unitHeight = 4
+	const unitWidth = (unitHeight * (width as number)) / (height as number)
+
 	return (
-		<div className="w-screen h-screen">
-			<div className="flex items-center justify-center h-screen">
-				<section className="max-w-screen-lg px-4 py-10 prose rounded-md md:px-6 lg:px-8 xl:px-10 bg-red-50">
-					<h2>{t("error-message-from-system")}</h2>
-					<pre>{message}</pre>
-					<p>{t("refresh-the-page-or")} <Link to="." className="alink-dashboard decoration-slate-50">{t("click-here")}</Link> {t("to-start-over")}.</p>
-					<blockquote>
-						{t("error-report-notice-1")}
-						<br />
-						{t("error-report-notice-2")}
-					</blockquote>
-				</section>
-			</div>
-		</div>
+		<motion.svg
+			height={height}
+			overflow="visible"
+			preserveAspectRatio="none"
+			viewBox={`0 0 ${unitWidth} ${unitHeight}`}
+			width={width}
+			{...props}
+		>
+			<motion.line
+				x1="0"
+				x2={unitWidth}
+				y1="0"
+				y2="0"
+				variants={top}
+				{...lineProps}
+			/>
+			<motion.line
+				x1="0"
+				x2={unitWidth}
+				y1="2"
+				y2="2"
+				variants={center}
+				{...lineProps}
+			/>
+			<motion.line
+				x1="0"
+				x2={unitWidth}
+				y1="4"
+				y2="4"
+				variants={bottom}
+				{...lineProps}
+			/>
+		</motion.svg>
 	)
 }
+
+export default MenuButton

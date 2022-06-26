@@ -1,6 +1,6 @@
 /*************************************************************************
  * ╔═══════════════════════════════════════════════════════════════════╗ *
- * ║   errorBoundaryLangTable  | 1.0.0                                 ║ *
+ * ║   NavLink  | 1.0.0                                                ║ *
  * ╠═══════════════════════════════════════════════════════════════════╣ *
  * ║                                                                   ║ *
  * ║   @author     A. Cao <cao@anh.pw>                                 ║ *
@@ -19,27 +19,22 @@
  ************************************************************************/
 
 import * as React from "react"
+import { NavLink as RemixNavLink, useLocation } from "@remix-run/react"
+import type { RemixNavLinkProps } from "@remix-run/react/components"
 
-import errorBoundaryLangTable from "~/languages/ErrorBoundary"
-import Link from "./Link"
-import useTranslate from "~/utils/useTranslate"
+const NavLink = React.forwardRef(
+	function Link(props: RemixNavLinkProps, ref: React.Ref<HTMLAnchorElement> | undefined) {
+		const location = useLocation()
+		const { to, ...otherProps } = props
+		return (
+			<RemixNavLink
+				{...otherProps}
+				rel="prefetch"
+				to={to + location.search}
+				ref={ref}
+			/>
+		)
+	}
+)
 
-export default function ErrorBoundaryComponent({ message }: { message: string }) {
-	const { t } = useTranslate([errorBoundaryLangTable])
-	return (
-		<div className="w-screen h-screen">
-			<div className="flex items-center justify-center h-screen">
-				<section className="max-w-screen-lg px-4 py-10 prose rounded-md md:px-6 lg:px-8 xl:px-10 bg-red-50">
-					<h2>{t("error-message-from-system")}</h2>
-					<pre>{message}</pre>
-					<p>{t("refresh-the-page-or")} <Link to="." className="alink-dashboard decoration-slate-50">{t("click-here")}</Link> {t("to-start-over")}.</p>
-					<blockquote>
-						{t("error-report-notice-1")}
-						<br />
-						{t("error-report-notice-2")}
-					</blockquote>
-				</section>
-			</div>
-		</div>
-	)
-}
+export default NavLink

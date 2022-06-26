@@ -16,22 +16,21 @@ import {
 import { Toaster } from "react-hot-toast"
 import NProgress from "nprogress"
 import nProgressStyles from "nprogress/nprogress.css"
+import invariant from "tiny-invariant"
 
-import styles from "./styles/app.css"
-import { getSeo } from "./seo"
-import { cookieUserPrefs } from "./cookies"
+import { ADMIN_EMAIL, DEFAULT_LANGUAGE, SITE_KEYWORDS, SITE_NAME, SUPPORTED_LANGUAGES } from "./data/static"
 import { authenticator } from "./services/auth.server"
-import { ADMIN_EMAIL, DEFAULT_LANGUAGE, SITE_KEYWORDS, SUPPORTED_LANGUAGES } from "./data/static"
+import { cookieUserPrefs } from "./cookies"
+import { getSeo } from "./seo"
+import CatchBoundaryComponent from "./components/CatchBoundaryComponent"
+import ErrorBoundaryComponent from "./components/ErrorBoundaryComponent"
+import generalLangTable from "./languages/general"
+import styles from "./styles/app.css"
+import useErrorReport from "./utils/useErrorReport"
+import useTranslate from "./utils/useTranslate"
 
 import type { LinksFunction, LoaderFunction, MetaFunction, ActionFunction, HeadersFunction } from "@remix-run/cloudflare"
 import type { TLang, TUser } from "./types"
-import invariant from "tiny-invariant"
-import useErrorReport from "./utils/useErrorReport"
-import Link from "./components/Link"
-import useTranslate from "./utils/useTranslate"
-import errorBoundaryLangTable from "./language/ErrorBoundary"
-import ErrorBoundaryComponent from "./components/ErrorBoundaryComponent"
-import CatchBoundaryComponent from "./components/CatchBoundaryComponent"
 
 const [seoMeta, seoLinks] = getSeo()
 
@@ -51,7 +50,7 @@ export const links: LinksFunction = () => {
 export const meta: MetaFunction = () => {
 	return (
 		{
-			title: "Great Bolero Website",
+			title: SITE_NAME,
 			viewport: "width=device-width,initial-scale=1",
 			charset: "utf-8",
 			keywords: SITE_KEYWORDS,
@@ -137,9 +136,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 	)
 }
 
-export default function App() {
+interface DocumentProps {
+	children: React.ReactNode
+	lang: string
+}
+
+function Document({ children, lang }: DocumentProps) {
 	const transition = useTransition()
-	const loaderData = useLoaderData()
 
 	React.useEffect(() => {
 		// when the state is idle then we can to complete the progress bar
@@ -150,13 +153,13 @@ export default function App() {
 	}, [transition.state])
 
 	return (
-		<html lang={loaderData.lang}>
+		<html lang={lang}>
 			<head>
 				<Meta />
 				<Links />
 			</head>
 			<body>
-				<Outlet />
+				{children}
 				<Toaster position="bottom-right" />
 				<ScrollRestoration />
 				<Scripts />
@@ -166,15 +169,35 @@ export default function App() {
 	)
 }
 
+export default function App() {
+	const { lang } = useTranslate([])
+	return (
+		<Document lang={lang}>
+			<Outlet />
+		</Document>
+	)
+}
+
 export function ErrorBoundary({ error }: { error: Error }) {
+	const { lang } = useTranslate([])
+	const location = useLocation()
 	useErrorReport(error.message, location.pathname + location.search)
-	return <ErrorBoundaryComponent message={error.message}/>
+	return (
+		<Document lang={lang}>
+			<ErrorBoundaryComponent message={error.message}/>
+		</Document>
+	)
 }
 
 export function CatchBoundary() {
+	const { lang } = useTranslate([])
 	const caught = useCatch()
 	const location = useLocation()
 	const content = `[${caught.status}] ${caught.statusText}`
 	useErrorReport(content, location.pathname + location.search)
-	return  <CatchBoundaryComponent message={content} />
+	return (
+		<Document lang={lang}>
+			<CatchBoundaryComponent message={content} />
+		</Document>
+	)
 }

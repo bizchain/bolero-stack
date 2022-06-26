@@ -1,5 +1,4 @@
 import * as React from "react"
-
 import clsx from "clsx"
 
 function Modal({ isOpen, closeModal, title, children }: {

@@ -2,14 +2,12 @@ import * as React from "react"
 
 import { getSeoLinks, getSeoMeta } from "~/seo"
 import { SITE_BASE_URL, SITE_LONG_DESC, SITE_NAME, SITE_SHORT_DESC } from "~/data/static"
-import Link from "~/components/Link"
-import LanguageSwitcher from "~/components/LanguageSwitcher"
-import languageSwitcherLangTable from "~/language/LanguageSwitcher"
-import useTranslate from "~/utils/useTranslate"
 
 import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare"
-import Navigator from "~/components/Navigator"
 import ErrorBoundaryComponent from "~/components/ErrorBoundaryComponent"
+import Block from "~/components/Block"
+import SocialIconsGroup from "~/components/SocialIconsGroup"
+import Navigator from "~/components/Navigator"
 
 export const headers = () => {
 	return {
@@ -34,25 +32,31 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Index() {
-	// const { t } = useTranslate(indexRouteLangTable)
+	// const { t } = useTranslate([indexRouteLangTable])
 	return (
 		<>
 			<Navigator />
-			<div className="p-10">
-				<h1 className="text-3xl font-bold underline">
-					Hello world
-				</h1>
-				<div className="prose">
-					hello world
-				</div>
-			</div>
+			<Block  className="bg-green-300">
+				
+				<Block.Fixed className="h-24 bg-slate-200">
+
+				</Block.Fixed>
+
+				<Block.Fixed className="p-10 bg-red-200">
+					<div>Demo for Social Icons</div>
+					<SocialIconsGroup className="w-6 h-6 fill-green-600" spacing={2}/>
+					<div>Vertial aligned</div>
+					<SocialIconsGroup className="w-10 h-10 fill-orange-700" spacing={4} colAlign/>
+				</Block.Fixed>
+
+			</Block>
 		</>
 	)
 }
 
 
 export function ErrorBoundary({ error }: { error: Error }) {
-	return <ErrorBoundaryComponent message={error.message}/>
+	return <ErrorBoundaryComponent message={error.message} />
 }
 
 export function CatchBoundary() {

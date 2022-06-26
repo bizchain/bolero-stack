@@ -1,19 +1,32 @@
 import * as React from "react"
-import { SocialIconButton } from "./SocialIconButton"	
-import { SocialIconFacebook, SocialIconLinkedIn, SocialIconTwitter } from "@bizchain.vn/svg"
 
-export default function SocialIconsGroup(){
+import { AiFillFacebook, AiOutlineTwitter, AiOutlineLinkedin } from "react-icons/ai"
+
+import SocialIcons from "./SocialIcons"
+
+/**
+ * className for this component will go direct to `Icons`
+ */
+export default function SocialIconsGroup({ className, spacing, colAlign }: {
+	className?: string
+	colAlign?: boolean
+	spacing?: 2 | 4 | 6
+}){
 	return (
-		<div className="flex items-center space-x-2">
-			<SocialIconButton url="https://www.facebook.com" className="bg-indigo-600">
-				<SocialIconFacebook />
-			</SocialIconButton>
-			<SocialIconButton url="https://twitter.com/vBizChain" className="bg-blue-600">
-				<SocialIconTwitter />
-			</SocialIconButton>
-			<SocialIconButton url="https://www.linkedin.com" className="bg-blue-800">
-				<SocialIconLinkedIn />
-			</SocialIconButton>
-		</div>
+		<SocialIcons spacing={spacing ?? 2} colAlign={colAlign} className="p-2 rounded-lg">
+			
+			<SocialIcons.Item url="https://facebook.com">
+				<AiFillFacebook className={className ?? "w-5 h-5 fill-white"}/>
+			</SocialIcons.Item>
+
+			<SocialIcons.Item url="https://twitter.com">
+				<AiOutlineTwitter className={className ?? "w-5 h-5 fill-white"}/>
+			</SocialIcons.Item>
+
+			<SocialIcons.Item url="https://linkedin.com">
+				<AiOutlineLinkedin className={className ?? "w-5 h-5 fill-white"}/>
+			</SocialIcons.Item>
+
+		</SocialIcons>
 	)
 }

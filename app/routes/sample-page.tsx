@@ -17,13 +17,13 @@ export const meta: MetaFunction = () => {
 	return ({ ...seoMeta })
 }
 
-export default function AboutRoute() {
+export default function SamplePageRoute() {
 	const { t } = useTranslate([navigatorLangTable])
 	return (
 		<>
 			<Navigator />
 			<div className="p-10 bg-red-100">
-				<h1>{t("about-us")}</h1>
+				<h1>{t("sample-page")}</h1>
 			</div>
 		</>
 
