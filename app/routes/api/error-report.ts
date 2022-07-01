@@ -1,6 +1,6 @@
 /*************************************************************************
  * ╔═══════════════════════════════════════════════════════════════════╗ *
- * ║   api/error-report | 1.0.0                                        ║ *
+ * ║   api/error-report | 1.0.1                                        ║ *
  * ╠═══════════════════════════════════════════════════════════════════╣ *
  * ║                                                                   ║ *
  * ║   @author     A. Cao <cao@anh.pw>                                 ║ *
@@ -25,8 +25,6 @@ import { LICENSE_KEY } from "~/data/static.server"
  * Track any error happened for bug fixed
  */
 export const action: ActionFunction = async ({ request }) => {
-	const url = new URL(request.url)
-	
 	const formData = await request.formData()
 
 	const secret = String(formData.get("secret"))
@@ -39,8 +37,8 @@ export const action: ActionFunction = async ({ request }) => {
 	const email = String(formData.get("email"))
 	const pathname = String(formData.get("pathname"))
 
-	const errorStr = JSON.stringify({ 
-		error: `${date} > ${name} (${email}) > ${message} @ ${pathname} | ${url.hostname}`,
+	const errorStr = JSON.stringify({
+		error: `${date} > ${name} (${email}) > ${message} @ ${pathname} | ${request.url}`,
 		lic: LICENSE_KEY
 	})
 
