@@ -26,6 +26,5 @@ export default function SamplePageRoute() {
 				<h1>{t("sample-page")}</h1>
 			</div>
 		</>
-
 	)
 }

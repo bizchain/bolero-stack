@@ -22,6 +22,7 @@ import useErrorReport from "~/utils/useErrorReport"
 import useTranslate from "~/utils/useTranslate"
 import errorBoundaryLangTable from "~/languages/ErrorBoundary"
 import ErrorBoundaryComponent from "~/components/ErrorBoundaryComponent"
+import { cacheControl } from "@bizchain.vn/utils"
 
 export const meta: MetaFunction = () => {
 	return {
@@ -90,7 +91,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 		},
 		{
 			headers: {
-				"Cache-Control": "max-age=300, stale-while-revalidate=60"
+				"Cache-Control": cacheControl({ 
+					browserCache: "5 minutes",
+					cdnCache: "1 minutes",
+					staleWhileRevalidate: 60
+				})
 			}
 		}
 	)

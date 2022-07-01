@@ -7,7 +7,7 @@ import { SITE_NAME } from "~/data/static"
 import useUser from "~/utils/useUser"
 import { routeAuthenticator } from "~/services/auth.server"
 
-import type { HeadersFunction, LoaderFunction, MetaFunction } from "@remix-run/cloudflare"
+import type { LoaderFunction, MetaFunction } from "@remix-run/cloudflare"
 
 export const meta: MetaFunction = () => {
 	return {
@@ -15,11 +15,11 @@ export const meta: MetaFunction = () => {
 	}
 }
 
-export const headers: HeadersFunction = ({ loaderHeaders }) => {
-	return {
-		"Cache-Control": loaderHeaders.get("Cache-Control") ?? ""
-	}
-}
+// export const headers: HeadersFunction = ({ loaderHeaders }) => {
+// 	return {
+// 		"Cache-Control": loaderHeaders.get("Cache-Control") ?? ""
+// 	}
+// }
 
 export const loader: LoaderFunction = async ( {request} ) => {
 	await routeAuthenticator(request)

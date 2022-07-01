@@ -1,17 +1,22 @@
 import * as React from "react"
 
+import { cacheControl } from "@bizchain.vn/utils"
+
 import { getSeoLinks, getSeoMeta } from "~/seo"
 import { SITE_BASE_URL, SITE_LONG_DESC, SITE_NAME, SITE_SHORT_DESC } from "~/data/static"
+import Block from "~/components/Block"
+import Navigator from "~/components/Navigator"
+import SocialIconsGroup from "~/components/SocialIconsGroup"
 
 import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare"
-import ErrorBoundaryComponent from "~/components/ErrorBoundaryComponent"
-import Block from "~/components/Block"
-import SocialIconsGroup from "~/components/SocialIconsGroup"
-import Navigator from "~/components/Navigator"
 
 export const headers = () => {
 	return {
-		"Cache-Control": "max-age=300, stale-while-revalidate=60"
+		"Cache-Control": cacheControl({ 
+			browserCache: "5 minutes",
+			cdnCache: "1 minutes",
+			staleWhileRevalidate: 60
+		})
 	}
 }
 
@@ -51,18 +56,5 @@ export default function Index() {
 
 			</Block>
 		</>
-	)
-}
-
-
-export function ErrorBoundary({ error }: { error: Error }) {
-	return <ErrorBoundaryComponent message={error.message} />
-}
-
-export function CatchBoundary() {
-	return (
-		<div>
-			This is Index Catch Boundary
-		</div>
 	)
 }

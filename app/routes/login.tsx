@@ -4,7 +4,7 @@ import { json } from "@remix-run/cloudflare"
 
 import { AuthorizationError } from "remix-auth"
 import { random } from "lodash"
-import { REGEX_EMAIL } from "@bizchain.vn/utils"
+import { cacheControl, REGEX_EMAIL } from "@bizchain.vn/utils"
 import { Honeypot } from "@bizchain.vn/ui"
 import clsx from "clsx"
 import toast from "react-hot-toast"
@@ -32,7 +32,11 @@ import MiniFooter from "~/components/MiniFooter"
 
 export const headers = () => {
 	return {
-		"Cache-Control": "max-age=300, stale-while-revalidate=60"
+		"Cache-Control": cacheControl({ 
+			browserCache: "5 minutes",
+			cdnCache: "1 minutes",
+			staleWhileRevalidate: 60
+		})
 	}
 }
 

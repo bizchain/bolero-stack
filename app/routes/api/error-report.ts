@@ -1,41 +1,61 @@
+/*************************************************************************
+ * ╔═══════════════════════════════════════════════════════════════════╗ *
+ * ║   api/error-report | 1.0.0                                        ║ *
+ * ╠═══════════════════════════════════════════════════════════════════╣ *
+ * ║                                                                   ║ *
+ * ║   @author     A. Cao <cao@anh.pw>                                 ║ *
+ * ║   @copyright  Chasoft Labs © 2022                                 ║ *
+ * ║   @link       https://chasoft.net                                 ║ *
+ * ║                                                                   ║ *
+ * ╟───────────────────────────────────────────────────────────────────╢ *
+ * ║ @license This product is licensed and sold at CodeCanyon.net      ║ *
+ * ║ If you have downloaded this from another site or received it from ║ *
+ * ║ someone else than me, then you are engaged in an illegal activity.║ *
+ * ║ You must delete this software immediately or buy a proper license ║ *
+ * ║ from http://codecanyon.net/user/chasoft/portfolio?ref=chasoft.    ║ *
+ * ╟───────────────────────────────────────────────────────────────────╢ *
+ * ║      THANK YOU AND DON'T HESITATE TO CONTACT ME FOR ANYTHING      ║ *
+ * ╚═══════════════════════════════════════════════════════════════════╝ *
+ ************************************************************************/
+
 import { ActionFunction, json } from "@remix-run/cloudflare"
+import { LICENSE_KEY } from "~/data/static.server"
 
-import { addBlocks, apiHeaders, newPlainTextBlocks, parsePageId } from "@bizchain.vn/notion"
-
-import { ERROR_PAGE_ID, NOTION_API_KEY } from "~/data/static.server"
-
+/**
+ * Track any error happened for bug fixed
+ */
 export const action: ActionFunction = async ({ request }) => {
-	/**
-	 * This API only works when user provide ERROR_PAGE_ID
-	 */
-	if (!ERROR_PAGE_ID)
-		return json(
-			{ message: "ERROR_PAGE_ID not found - Docs: https://docs.bizchain.vn/docs/developer/install/error-report" },
-			{ status: 400 }
-		)
-
-	/**
-	 * Record the error and datetime as a Rich_text block
-	 */
+	const url = new URL(request.url)
+	
 	const formData = await request.formData()
 
 	const secret = String(formData.get("secret"))
-	if (secret !== "ec6h%T^9dvnt^CL5aY")
-		return json({ message: "ACTION DENIED" }, { status: 403 })
+	//secret is hard-coded, DO NOT CHANGE
+	if (secret !== "ec6h%T^9dvnt^CL5aY") return json({ message: "ACTION DENIED" }, { status: 403 })
 
 	const message = String(formData.get("error"))
 	const date = String(formData.get("date"))
 	const name = String(formData.get("name"))
 	const email = String(formData.get("email"))
-	const url = String(formData.get("url"))
-	
-	const errorStr = `${date} > ${name} (${email}) > ${message} @ ${url}`
+	const pathname = String(formData.get("pathname"))
 
-	await addBlocks(
-		apiHeaders(NOTION_API_KEY),
-		ERROR_PAGE_ID,
-		newPlainTextBlocks([errorStr])
-	)
+	const errorStr = JSON.stringify({ 
+		error: `${date} > ${name} (${email}) > ${message} @ ${pathname} | ${url.hostname}`,
+		lic: LICENSE_KEY
+	})
+
+	//connect with our api to record any error happened
+	const response = await fetch("https://bizchain.vn/api/error-report", {
+		method: "POST",
+		headers: {
+			"Authorization": `Bearer ${LICENSE_KEY}`,
+			"Content-Type": "application/json"
+		},
+		body: errorStr
+	})
+
+	const res = await response.json<{ object: string, message: string }>()
+	if (res.object === "error") throw new Error(`errorReport: ${res.message}`)
 
 	return json({ message: "Error information received successfully" }, { status: 200 })
 }

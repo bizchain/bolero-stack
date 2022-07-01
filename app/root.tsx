@@ -8,7 +8,6 @@ import {
 	Scripts,
 	ScrollRestoration,
 	useCatch,
-	useLoaderData,
 	useLocation,
 	useTransition,
 } from "@remix-run/react"
@@ -24,13 +23,13 @@ import { cookieUserPrefs } from "./cookies"
 import { getSeo } from "./seo"
 import CatchBoundaryComponent from "./components/CatchBoundaryComponent"
 import ErrorBoundaryComponent from "./components/ErrorBoundaryComponent"
-import generalLangTable from "./languages/general"
 import styles from "./styles/app.css"
 import useErrorReport from "./utils/useErrorReport"
 import useTranslate from "./utils/useTranslate"
 
 import type { LinksFunction, LoaderFunction, MetaFunction, ActionFunction, HeadersFunction } from "@remix-run/cloudflare"
 import type { TLang, TUser } from "./types"
+import { cacheControl } from "@bizchain.vn/utils"
 
 const [seoMeta, seoLinks] = getSeo()
 
@@ -130,7 +129,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 		},
 		{
 			headers: {
-				"Cache-Control": "max-age=300, stale-while-revalidate=60"
+				"Cache-Control": cacheControl({ 
+					browserCache: "5 minutes",
+					cdnCache: "1 minutes",
+					staleWhileRevalidate: 60
+				})
 			}
 		}
 	)

@@ -7,21 +7,20 @@ import dayjs from "dayjs"
 import { useMatchesById } from "./useMatchesById"
 import { TRootDataLoader } from "~/root"
 
-export default function useErrorReport(message: string, url: string){
+export default function useErrorReport(message: string, pathname: string){
 	const errorHandle = useFetcher()
 	const rootData = useMatchesById("root").data as TRootDataLoader
 
 	React.useEffect(()=>{
 		errorHandle.submit(
 			{
-				//DO NOT MODIFY THIS VALUE
-				//This used to protect this error report api endpoint
+				//secret is hard-coded, DO NOT CHANGE
 				secret: "ec6h%T^9dvnt^CL5aY",
 				error: message,
 				date: dayjs().format(DATE_FORMAT.FULL),
 				email: rootData?.user?.email ?? "",
 				name: rootData?.user?.Name ?? "",
-				url
+				pathname
 			},
 			{ method: "post", action: "/api/error-report" }
 		)

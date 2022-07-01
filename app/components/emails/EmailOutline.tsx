@@ -1,5 +1,5 @@
 import * as React from "react"
-import { SITE_NAME, SITE_SLOGAN } from "~/data/static"
+import { SITE_NAME, SITE_SLOGAN, SITE_URL } from "~/data/static"
 
 export default function EmailOutline({ children }: { children: React.ReactNode }) {
 	return (
@@ -18,7 +18,7 @@ export default function EmailOutline({ children }: { children: React.ReactNode }
 							<tr style={{ padding: 0 }}>
 								<td rowSpan={2} style={{ paddingBottom: 0 }}>
 									<img
-										src="https://store.bizchain.vn/img/logo-bizchain-128.png"
+										src={`${SITE_URL}/img/logos/logo-1x.png`}
 										alt=""
 										style={{
 											width: "50px",
@@ -75,7 +75,7 @@ export default function EmailOutline({ children }: { children: React.ReactNode }
 								display: "block"
 							}}
 						>
-							© 2022 - <a href="https://bizchain.vn" target="_blank" rel="noreferrer">
+							© 2022 - <a href={SITE_URL} target="_blank" rel="noreferrer">
 								BizChain Vietnam
 							</a>
 						</p>
