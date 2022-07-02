@@ -15,7 +15,7 @@
     "@bizchain.vn/notion": "^0.0.5",
     "@bizchain.vn/svg": "^0.0.1",
     "@bizchain.vn/ui": "^0.0.3",
-    "@bizchain.vn/utils": "^0.0.9",
+    "@bizchain.vn/utils": "^0.0.10",
     "@headlessui/react": "^1.6.5",
     "@remix-run/cloudflare": "^1.5.1",
     "@remix-run/cloudflare-pages": "^1.5.1",

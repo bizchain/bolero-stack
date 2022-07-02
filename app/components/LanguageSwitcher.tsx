@@ -34,13 +34,20 @@ import type { TLang } from "~/types"
 type LangListType = {
 	key: TLang,
 	langName: string
-	imgUrl: string
+	imgBase64: string
 }
 
 export const langList: LangListType[] = [
 	//the very first item default language
-	{ key: "en", langName: "english", imgUrl: "/img/flags/flag-usa.png" },
-	{ key: "vi", langName: "vietnamese", imgUrl: "/img/flags/flag-vietnam.png" },
+	{ 
+		key: "en",
+		langName: "english",
+		imgBase64: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAABQUlEQVRoge3WsUrDUBTG8X80qC1CCLg5uHSwQzfBxaGLiKPiW/gCdezQ1UfwCRQndRAXBQmCiw7dhFIIFdGESMUIGqcEoyK03ptw4fym3OXmfpyccwNCCCGEKI8FkCSJ1dw8/lC9+VHUVr1lZvbsygKY0PaGguQCVCs2G+sLY68bdZdG3dV53h/s9GF6apLd9jKLNYenMMa7fhhpfdd7prOzBMB265K+P+R1/1TfyV0nHyB+e+fcG+Dfv3DTDUZeB2HMhTcAoO8P9R38G61NfLC3onrLzJzrWPClAqlqxWatOc/hSW+sddoDt92Ama1VbQFSuQCq+4BI+/nzAUzsA+N7QO6Bv+6BQgPo+P6LmELyM1e2rAKPYaS8Ajr9OoVMZHyAbAoVMTF0ML4CxgeQKVQ24wPIFCqb8QGEEEIIIf7hEycURuUfhn7yAAAAAElFTkSuQmCC"
+	},
+	{
+		key: "vi",
+		langName: "vietnamese",
+		imgBase64: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAABsElEQVRoge2Yy0rDQBSG/0kmtEisKK5c+ASKiDcQ26cRxY2iPoDgyr24ddEX6APUlT6BCi68FaQqFSpRcNLm6iIIFtpqyRmDcD4IDMkw53zMORMSgGEYhmH+MeJrcDkzE2eZyKBMn58LADCyTiQtLJA1LJA1LNAPa1zAGhc/T0yBVoFCUaKwInWG+AOBkl4BbavLUYGhKRMCgBwzELxGWuJo24HCioQwkgiFZVNXGI0CRdl1TE3qlUdKEhM7OZh279PGnjMxdWJ33ItUjKdDD07VTxU/9Q68nQa4W1dQV7+vcfc6wu2Gmzp5gKiEvEaM2rbCS9kD+nnEQLPi435LwXukaWqy4oxD4KXsoVWLMLmX7zrnYb+F97OAKiQADU1sWL2fCYv+rUwu8P3Eif3k+mKkSH+ckgoYOcBeSJL0GjFquy7uN12060m924sSRp52F0gF7KUkQafq43ZVQV2FcG9C3K0pNCt+hyAVpG+Y4XmJ+kELzklno0Ye8HzUxsdlCHvWJG1kUoHGcRuB0/vnxvtpAHURUoakLaF+yQ8yZxD4iyxrWCBrWIBhGIZhmBR8AlAegdvTb90RAAAAAElFTkSuQmCC" },
 ]
 
 type LanguageSwitcherProps = {
@@ -64,7 +71,7 @@ export default function LanguageSwitcher({ flagOnly = true, className }: Languag
 			<label tabIndex={0} className="cursor-pointer group">
 				<div className="w-6 h-6">
 					<motion.img
-						src={currentLangItem.imgUrl}
+						src={currentLangItem.imgBase64}
 						whileHover={{ scale: 1.4, rotate: -15, textShadow: "0px 0px 8px rgb(255,255,255)" }}
 						alt=""
 					/>
@@ -86,7 +93,7 @@ export default function LanguageSwitcher({ flagOnly = true, className }: Languag
 					>
 						<Link to={ lang.key === DEFAULT_LANGUAGE ? location.pathname : `${location.pathname}?lang=${lang.key}`}>
 							<motion.img
-								src={lang.imgUrl}
+								src={lang.imgBase64}
 								className={clsx("w-6 h-6", (currentLang !== lang.key) ? "grayscale hover:grayscale-0" : "")}
 								whileHover={{ scale: 1.4, rotate: -15, textShadow: "0px 0px 8px rgb(255,255,255)" }}
 								alt=""
