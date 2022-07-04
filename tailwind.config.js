@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+// const defaultTheme = require("tailwindcss/defaultTheme")
+
 module.exports = {
 	content: [
 		"./app/**/*.{js,ts,jsx,tsx}"
@@ -13,7 +16,16 @@ module.exports = {
 				"dashLink": "#0051c3",
 				"dashLinkHover": "#003681",
 				"dashGrayBackground": "#f2f2f2"
-			}
+			},
+
+			// fontFamily: {
+			// 	"sans": ["Inter", ...defaultTheme.fontFamily.sans],
+			// },
+
+			screens: {
+				"xs": "500px",
+				"3xl": "2000px",
+			},
 		},
 	},
 	plugins: [
