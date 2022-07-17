@@ -20,7 +20,7 @@
 
 import * as React from "react"
 import { NavLink as RemixNavLink, useLocation } from "@remix-run/react"
-import type { RemixNavLinkProps } from "@remix-run/react/components"
+import type { RemixNavLinkProps } from "@remix-run/react/dist/components"
 
 const NavLink = React.forwardRef(
 	function Link(props: RemixNavLinkProps, ref: React.Ref<HTMLAnchorElement> | undefined) {
