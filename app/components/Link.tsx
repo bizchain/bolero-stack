@@ -1,6 +1,6 @@
 /*************************************************************************
  * ╔═══════════════════════════════════════════════════════════════════╗ *
- * ║   Link  | 1.0.0                                                   ║ *
+ * ║   Link  | 1.1.0                                                   ║ *
  * ╠═══════════════════════════════════════════════════════════════════╣ *
  * ║                                                                   ║ *
  * ║   @author     A. Cao <cao@anh.pw>                                 ║ *
@@ -20,7 +20,8 @@
 
 import * as React from "react"
 import { Link as RemixLink, useLocation } from "@remix-run/react"
-import type { RemixLinkProps } from "@remix-run/react/components"
+import { RemixLinkProps } from "@remix-run/react/dist/components"
+
 
 /**
  * Use this to general internal link
@@ -30,6 +31,16 @@ const Link = React.forwardRef(
 	function Link(props: RemixLinkProps, ref: React.Ref<HTMLAnchorElement> | undefined) {
 		const location = useLocation()
 		const { to, ...otherProps } = props
+
+		if (String(to).startsWith("http"))
+			return (
+				<a
+					{...otherProps}
+					href={to + location.search}
+					ref={ref}
+				/>
+			)
+
 		return (
 			<RemixLink
 				{...otherProps}
