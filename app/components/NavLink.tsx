@@ -1,6 +1,6 @@
 /*************************************************************************
  * ╔═══════════════════════════════════════════════════════════════════╗ *
- * ║   NavLink  | 1.0.0                                                ║ *
+ * ║   NavLink  | 1.1.1                                                ║ *
  * ╠═══════════════════════════════════════════════════════════════════╣ *
  * ║                                                                   ║ *
  * ║   @author     A. Cao <cao@anh.pw>                                 ║ *
@@ -19,18 +19,20 @@
  ************************************************************************/
 
 import * as React from "react"
-import { NavLink as RemixNavLink, useLocation } from "@remix-run/react"
+import { NavLink as RemixNavLink } from "@remix-run/react"
 import type { RemixNavLinkProps } from "@remix-run/react/dist/components"
+import useLinkGenerator from "~/utils/useLinkGenerator"
 
 const NavLink = React.forwardRef(
 	function Link(props: RemixNavLinkProps, ref: React.Ref<HTMLAnchorElement> | undefined) {
-		const location = useLocation()
 		const { to, ...otherProps } = props
+		const finalUrl = useLinkGenerator(String(to))
+
 		return (
 			<RemixNavLink
 				{...otherProps}
-				rel="prefetch"
-				to={to + location.search}
+				prefetch="intent"
+				to={finalUrl}
 				ref={ref}
 			/>
 		)

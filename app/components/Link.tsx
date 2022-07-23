@@ -1,6 +1,6 @@
 /*************************************************************************
  * ╔═══════════════════════════════════════════════════════════════════╗ *
- * ║   Link  | 1.1.0                                                   ║ *
+ * ║   Link  | 1.2.1                                                   ║ *
  * ╠═══════════════════════════════════════════════════════════════════╣ *
  * ║                                                                   ║ *
  * ║   @author     A. Cao <cao@anh.pw>                                 ║ *
@@ -19,8 +19,9 @@
  ************************************************************************/
 
 import * as React from "react"
-import { Link as RemixLink, useLocation } from "@remix-run/react"
+import { Link as RemixLink } from "@remix-run/react"
 import { RemixLinkProps } from "@remix-run/react/dist/components"
+import useLinkGenerator from "~/utils/useLinkGenerator"
 
 
 /**
@@ -29,14 +30,14 @@ import { RemixLinkProps } from "@remix-run/react/dist/components"
  */
 const Link = React.forwardRef(
 	function Link(props: RemixLinkProps, ref: React.Ref<HTMLAnchorElement> | undefined) {
-		const location = useLocation()
 		const { to, ...otherProps } = props
+		const finalUrl = useLinkGenerator(String(to))
 
 		if (String(to).startsWith("http"))
 			return (
 				<a
 					{...otherProps}
-					href={to + location.search}
+					href={finalUrl}
 					ref={ref}
 				/>
 			)
@@ -44,7 +45,8 @@ const Link = React.forwardRef(
 		return (
 			<RemixLink
 				{...otherProps}
-				to={to + location.search}
+				prefetch="intent"
+				to={finalUrl}
 				ref={ref}
 			/>
 		)
