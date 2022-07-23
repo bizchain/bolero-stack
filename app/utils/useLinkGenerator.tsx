@@ -1,6 +1,6 @@
 /*************************************************************************
  * ╔═══════════════════════════════════════════════════════════════════╗ *
- * ║   useLinkGenerator  | 1.0.0                                       ║ *
+ * ║   useLinkGenerator  | 1.1.0                                       ║ *
  * ╠═══════════════════════════════════════════════════════════════════╣ *
  * ║                                                                   ║ *
  * ║   @author     A. Cao <cao@anh.pw>                                 ║ *
@@ -32,7 +32,11 @@ export default function useLinkGenerator(slug: string) {
 
 	switch (slugArray.length) {
 		case 2:
-			slugArray[1] = slugArray[1] + (lang ? `&lang=${lang}` : "")
+			/**
+			 * we only add `lang param` when provided `lang param`
+			 * is not exist in provided `slug`.
+			 */
+			slugArray[1] = slugArray[1] + ((lang && !slug.includes("lang=")) ? `&lang=${lang}` : "")
 			break
 		case 1:
 			if (lang) slugArray.push(`lang=${lang}`)
