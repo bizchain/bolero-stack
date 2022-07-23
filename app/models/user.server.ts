@@ -16,7 +16,7 @@ import { passwordHash } from "@bizchain.vn/utils"
 
 import { DB_USERS, NOTION_API_KEY } from "~/data/static.server"
 
-import type { TQuery, TUser, TUserProperty, TUserStatus } from "~/types"
+import type { TQuery, User, UserProperty, UserStatus } from "~/types"
 import type {
 	CreatePageResponse, PropertyValueEmail, PropertyValueRichText, PropertyValueSelect, PropertyValueTitle
 } from "@bizchain.vn/notion"
@@ -26,7 +26,7 @@ import type {
  * @param user
  * @returns
  */
-export function isOnboarded(user: TUser): boolean {
+export function isOnboarded(user: User): boolean {
 	return (user.status === "activated" || user.status === "emailChanged" || user.status === "disabled")
 }
 
@@ -36,7 +36,7 @@ export function isOnboarded(user: TUser): boolean {
  * @param isNewUser
  * @returns
  */
-export function queryUserBuilder(properties: Array<TUserProperty>, isNewUser: { isNewUser: boolean }) {
+export function queryUserBuilder(properties: Array<UserProperty>, isNewUser: { isNewUser: boolean }) {
 	const query: TQuery = {
 		properties: {},
 	}
@@ -85,7 +85,7 @@ export function queryUserBuilder(properties: Array<TUserProperty>, isNewUser: { 
  * @param password
  * @returns
  */
-export async function createNewUser(Name: string, email: string, password: string): Promise<TUser> {
+export async function createNewUser(Name: string, email: string, password: string): Promise<User> {
 	const hashedPassword = await passwordHash(password)
 
 	const query = queryUserBuilder(
@@ -109,7 +109,7 @@ export async function createNewUser(Name: string, email: string, password: strin
 	return user
 }
 
-export function extractUserProperties(user: CreatePageResponse): TUser {
+export function extractUserProperties(user: CreatePageResponse): User {
 	return {
 		uid: user.id,
 		createdAt: user.created_time,
@@ -121,7 +121,7 @@ export function extractUserProperties(user: CreatePageResponse): TUser {
 			user.properties.password as PropertyValueRichText
 		),
 		status: (getSelectValue(user.properties._status as PropertyValueSelect) ??
-			"activated") as TUserStatus,
+			"activated") as UserStatus,
 	}
 }
 
@@ -130,7 +130,7 @@ export function extractUserProperties(user: CreatePageResponse): TUser {
  * @param {string} email
  * @returns
  */
-export async function getUser(email: string): Promise<TUser | null> {
+export async function getUser(email: string): Promise<User | null> {
 	const queryStr = JSON.stringify({
 		filter: {
 			property: "email",
@@ -153,7 +153,7 @@ export async function getUser(email: string): Promise<TUser | null> {
  * Get all users
  * @returns Array<TUser>
  */
-export async function getAllUsers(): Promise<TUser[]> {
+export async function getAllUsers(): Promise<User[]> {
 	const queryRes = await queryDatabase(apiHeaders(NOTION_API_KEY), DB_USERS)
 	const users = queryRes.results.map((user) => extractUserProperties(user))
 	return users
@@ -164,7 +164,7 @@ export async function getAllUsers(): Promise<TUser[]> {
  * @param password
  * @returns TUser | boolean
  */
-export async function isValidLogin(email: string, password: string): Promise<TUser | null> {
+export async function isValidLogin(email: string, password: string): Promise<User | null> {
 
 	console.log({email, password})
 

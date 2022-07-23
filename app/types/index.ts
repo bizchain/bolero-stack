@@ -3,31 +3,32 @@ import { Dictionary } from "lodash"
 /**
  * All supported languages for your website
  */
-export type TLang = "en" | "vi"
+export type Language = "en" | "vi"
 
 /**
  * Status of existing users
  */
-export type TUserStatus = "activated" | "emailChanged" | "disabled"
+export type UserStatus = "activated" | "emailChanged" | "disabled"
 
 /**
  * User's properties
  */
-export type TUser = {
+export type User = {
 	uid: string
 	createdAt: string
 	updatedAt: string
 	Name: string | null
 	email: string
 	password: string
-	status: TUserStatus
+	status: UserStatus
 }
 
 /**
  * DB_USERS SCHEME NAME
  */
-export type TUserProperty = {
-	name: "Name"
+export type UserProperty = {
+	name:
+	| "Name"
 	| "email"
 	| "password"
 	| "resetCode"
@@ -85,4 +86,28 @@ export type TSidebarMenuItem = TMenuItem & {
 export type TFooterMenuItem = {
 	title: string
 	children: TMenuItem[]
+}
+
+export type MarkdownText = string
+
+export type SupportedSocialIcon =
+	| "none"
+	| "website"
+	//
+	| "facebook"
+	| "twitter"
+	| "instagram"
+	| "tiktok"
+	| "youtube"
+	| "linkedin"
+	| "flickr"
+	//
+	| "github"
+	| "hashnode"
+	//
+	| "zalo"
+
+export type IconProps = {
+	url: string
+	name: SupportedSocialIcon
 }

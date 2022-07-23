@@ -17,7 +17,7 @@ import DashboardHeader from "~/components/dash/DashboardHeader"
 import dashStyle from "~/styles/dash.css"
 
 import type { ActionFunction, LoaderFunction, MetaFunction, LinksFunction } from "@remix-run/cloudflare"
-import type { TFooterMenuItem, TSidebarMenuItem, TUser } from "~/types"
+import type { TFooterMenuItem, TSidebarMenuItem, User } from "~/types"
 import useErrorReport from "~/utils/useErrorReport"
 import useTranslate from "~/utils/useTranslate"
 import errorBoundaryLangTable from "~/languages/ErrorBoundary"
@@ -41,7 +41,7 @@ export type TDashDataLoader = {
 	 * Keep track the status of the side bar
 	 */
 	sidebarExpanded: boolean
-	user: TUser
+	user: User
 	SIDEBAR_ITEMS: TSidebarMenuItem[]
 	FOOTER_ITEMS: TFooterMenuItem[]
 }

@@ -29,10 +29,10 @@ import { DEFAULT_LANGUAGE } from "~/data/static"
 import languageSwitcherLangTable from "~/languages/LanguageSwitcher"
 import useTranslate from "~/utils/useTranslate"
 
-import type { TLang } from "~/types"
+import type { Language } from "~/types"
 
 type TLangMeta = {
-	key: TLang,
+	key: Language,
 	langName: string
 	imgBase64: string
 }

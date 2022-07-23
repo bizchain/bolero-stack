@@ -8,9 +8,9 @@ import { isOnboarded, isValidLogin } from "~/models/user.server"
 import { sessionStorage } from "~/services/session.server"
 import { URL_ACCOUNT_RECOVERY, URL_DASHBOARD, URL_FORGOT_PASSWORD, URL_LOGIN, URL_ONBOARDING, URL_SIGNUP } from "~/data/url.server"
 
-import type { TUser } from "~/types"
+import type { User } from "~/types"
 
-export const authenticator = new Authenticator<TUser>(
+export const authenticator = new Authenticator<User>(
 	sessionStorage, {
 		throwOnError: true,
 		sessionKey: "YdA4wZ^v15dfM6%9SA",			//hard-coded - do not change after deploying
@@ -50,7 +50,7 @@ authenticator.use(
 /**
  * Put this function in any route's loader function which required a logged-in user
  */
-export async function routeAuthenticator(request: Request): Promise<Response | TUser | null> {
+export async function routeAuthenticator(request: Request): Promise<Response | User | null> {
 	const url = new URL(request.url)
 	const pathname = url.pathname
 	const user = await authenticator.isAuthenticated(request)

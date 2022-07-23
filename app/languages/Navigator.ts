@@ -1,4 +1,4 @@
-import type { TLang } from "~/types"
+import type { Language } from "~/types"
 
 /**
  * Keys
@@ -15,7 +15,7 @@ const langKey = [
  */
 
 type TLangKey = typeof langKey[number]
-type TLangTable = { [key in TLang]: { [P in TLangKey]: string } }
+type TLangTable = { [key in Language]: { [P in TLangKey]: string } }
 
 /**
  * Values for each languages

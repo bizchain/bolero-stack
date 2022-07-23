@@ -1,5 +1,5 @@
 import { cacheControl } from "@bizchain.vn/utils"
-import { TLang } from "~/types"
+import { Language } from "~/types"
 
 export const SITE_NAME = "SITE_NAME"
 export const SITE_SLOGAN = "SLOGAN"
@@ -15,8 +15,8 @@ export const SITE_BASE_URL = process.env.NODE_ENV === "production"
 
 export const ADMIN_EMAIL = "admin@example.com"
 
-export const SUPPORTED_LANGUAGES: TLang[] = ["en", "vi"]
-export const DEFAULT_LANGUAGE: TLang = "vi"
+export const SUPPORTED_LANGUAGES: Language[] = ["en", "vi"]
+export const DEFAULT_LANGUAGE: Language = "vi"
 
 /**
  * Default Cache-Control setting

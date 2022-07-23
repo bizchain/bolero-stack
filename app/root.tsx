@@ -28,7 +28,7 @@ import useErrorReport from "./utils/useErrorReport"
 import useTranslate from "./utils/useTranslate"
 
 import type { LinksFunction, LoaderFunction, MetaFunction, ActionFunction, HeadersFunction } from "@remix-run/cloudflare"
-import type { TLang, TUser } from "./types"
+import type { Language, User } from "./types"
 import { cacheControl } from "@bizchain.vn/utils"
 
 const [seoMeta, seoLinks] = getSeo()
@@ -69,7 +69,7 @@ export type TRootDataLoader = {
 	/**
 	 * Keep track the language of the site
 	 */
-	lang: TLang
+	lang: Language
 	/**
 	 * Whether user accept cookies or not, this is for EU market regulation
 	 */
@@ -77,7 +77,7 @@ export type TRootDataLoader = {
 	/**
 	 * Whether use is loggin or not
 	 */
-	user: TUser | null
+	user: User | null
 	/**
 	 * Does current user is the site's owner
 	 */
@@ -118,7 +118,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	 * Control the language via search params `?lang=`
 	 */
 	const url = new URL(request.url)
-	const _lang = url.searchParams.get("lang") as TLang
+	const _lang = url.searchParams.get("lang") as Language
 	const lang = SUPPORTED_LANGUAGES.includes(_lang) ? _lang : DEFAULT_LANGUAGE
 
 	return json<TRootDataLoader>(
