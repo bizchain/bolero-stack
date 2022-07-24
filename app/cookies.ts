@@ -5,3 +5,9 @@ export const cookieUserPrefs = createCookie("user-prefs", {
 	secure: process.env.NODE_ENV === "production", // secure if in production
 	path: "/"
 })
+
+export const cookieTest = createCookie("test-prefs", {
+	maxAge: 31_536_000, // one year
+	secure: process.env.NODE_ENV === "production", // secure if in production
+	path: "/"
+})
