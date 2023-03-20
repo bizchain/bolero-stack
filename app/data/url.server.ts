@@ -1,6 +1,0 @@
-export const URL_DASHBOARD = "/dash"
-export const URL_LOGIN = "/login"
-export const URL_ONBOARDING = "/onboarding"
-export const URL_SIGNUP = "/signup"
-export const URL_ACCOUNT_RECOVERY = "/account/recovery"
-export const URL_FORGOT_PASSWORD = "/forgot-password"

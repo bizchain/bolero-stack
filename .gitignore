@@ -5,6 +5,3 @@ node_modules
 /functions/\[\[path\]\].js.map
 /public/build
 .env
-
-package-lock.json
-app/styles/app.css
